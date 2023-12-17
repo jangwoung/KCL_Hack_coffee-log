@@ -11,7 +11,7 @@ interface Props {
 
 const Shop: NextPage<Props> = () => {
   return (
-    <div className='py-32 w-[100vw] font-rounded'>
+    <div className='py-28 w-[100vw] font-rounded'>
       <h1 className='w-[90vw] mx-[5vw] mb-8 text-lg font-rubik font-semibold'>珈琲豆の購入</h1>
 
       {/* search bar */}

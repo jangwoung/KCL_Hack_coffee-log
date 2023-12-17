@@ -1,8 +1,12 @@
 'use client'
 import { NextPage } from 'next'
 import Image from 'next/image'
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useRouter } from 'next/navigation'
 
+// import firebase
+import { auth, db } from "../../api/firebase";
+import { doc, setDoc } from "firebase/firestore"; 
 
 // import img
 import CoffeeCup from "../../images/coffee-cup.png";
@@ -15,19 +19,34 @@ const Record = () => {
   const [shopName, setShopName] = useState("")
   const [beansName, setBeansName] = useState("")
   const [Roasting, setRoasting] = useState(0) 
+  const [bitter, setBitter] = useState(3)
+  const [sour, setSour] = useState(3)
+  const [body, setBody] = useState(3)
 
-  const [bitter, setBitter] = useState("3")
-  const [sour, setSour] = useState("3")
-  const [body, setBody] = useState("3")
+  const [userId, setUserId] = useState("")
+  
+  const router = useRouter()
 
-
-  const handleClick = () => {
-    !(shopName == "" || beansName == "") 
-    && console.log(shopName, beansName, Roasting, bitter, sour, body)
+  useEffect(() => {
+    const user = auth.currentUser;
+    user !== null && setUserId(user.uid);
+  }, [])
+  
+  const handleClick = async() => {
+    !(shopName == "" || beansName == "") && 
+      console.log(userId, shopName, beansName, Roasting, bitter, sour, body)
+      await setDoc(doc(db, userId, shopName), {
+        beansName: beansName,
+        Roasting: Roasting,
+        bitter: bitter,
+        sour: sour,
+        body: body,
+      });
+      router.push("/mypage")
   }
 
   return (
-    <div className='py-32 w-[100vw] font-rounded'>
+    <div className='py-28 w-[100vw] font-rounded'>
       <h1 className='w-[90vw] mx-[5vw] mb-8 text-lg font-semibold'>コーヒーの記録</h1>
 
       {/* shop info */}
@@ -140,7 +159,7 @@ const Record = () => {
       <div className='flex flex-col justify-center items-center mt-[10vh] w-[90vw] mx-[5vw]'>
         <form action="" className='w-[80vw]'>
           <h1 className='text-lg font-semibold text-center'>酸味</h1>
-          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="bitter" min="1" max="5" onChange={(e) => setBitter(e.target.value)}/>
+          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="bitter" min="1" max="5" onChange={(e) => setBitter(Number(e.target.value))}/>
           <ul className='flex justify-between items-center mx-1 mt-2 font-semibold'>
             <li>1</li>
             <li>2</li>
@@ -150,7 +169,7 @@ const Record = () => {
           </ul>
 
           <h1 className='text-lg font-semibold mt-8 text-center'>苦味</h1>
-          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="" min="1" max="5" onChange={(e) => setSour(e.target.value)}/>
+          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="" min="1" max="5" onChange={(e) => setSour(Number(e.target.value))}/>
           <ul className='flex justify-between items-center mx-1 mt-2 font-semibold'>
             <li>1</li>
             <li>2</li>
@@ -160,7 +179,7 @@ const Record = () => {
           </ul>
 
           <h1 className='text-lg font-semibold mt-8 text-center'>コク</h1>
-          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="" min="1" max="5" onChange={(e) => setBody(e.target.value)}/>
+          <input className='appearance-none outline-none h-1 w-[100%] bg-[#D6B16B] rounded-sm' type="range" name="" min="1" max="5" onChange={(e) => setBody(Number(e.target.value))}/>
           <ul className='flex justify-between items-center mx-1 mt-2 font-semibold'>
             <li>1</li>
             <li>2</li>

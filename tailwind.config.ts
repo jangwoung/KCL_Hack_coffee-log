@@ -10,7 +10,7 @@ const config: Config = {
     fontFamily: {
       'rounded': ['M PLUS Rounded 1c', 'sans-serif'],
       'rubik': ['Rubik', 'sans-serif'],
-      'slacksideOne': ['Slackside One', 'sans-serif']
+      'slackSideOne': ['Slackside One', 'sans-serif']
     },
     extend: {
       backgroundImage: {

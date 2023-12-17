@@ -20,8 +20,9 @@ export default function RootLayout({
   return (
     <html lang="jp" className='font-rubik'>
       <body className={inter.className}>
-        <Header/>
-        {children}
+        <Header>
+          {children}
+        </Header>
       </body>
     </html>
   )
